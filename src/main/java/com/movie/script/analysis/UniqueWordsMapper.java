@@ -14,6 +14,21 @@ public class UniqueWordsMapper extends Mapper<Object, Text, Text, Text> {
 
     @Override
     public void map(Object key, Text value, Context context) throws IOException, InterruptedException {
-
+        String line = value.toString();
+        String dialogueLine[] = line.split(":");
+        
+        if(dialogueLine.length==2){
+            character.set(dialogueLine[0]);
+            StringTokenizer tokenizer = new StringTokenizer(dialogueLine[1]);
+            HashSet<String> uniqueWords = new HashSet<>();
+            while(tokenizer.hasMoreTokens()){
+                String checkToken = tokenizer.nextToken();
+                if(!uniqueWords.contains(checkToken)){
+                    uniqueWords.add(checkToken);
+                    word.set(checkToken);
+                    context.write(character, word);
+                }
+            }
+        }
     }
 }

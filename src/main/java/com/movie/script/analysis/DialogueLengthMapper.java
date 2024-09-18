@@ -14,6 +14,16 @@ public class DialogueLengthMapper extends Mapper<Object, Text, Text, IntWritable
 
     @Override
     public void map(Object key, Text value, Context context) throws IOException, InterruptedException {
+        String line = value.toString();
+        String dialogueLine[] = line.split(":");
 
+        if(dialogueLine.length==2){
+            StringTokenizer tokenizer = new StringTokenizer(dialogueLine[1]);
+            character.set(dialogueLine[0]);
+            wordCount.set(tokenizer.countTokens());
+            context.write(character, wordCount);
+        }
+
+        
     }
 }
